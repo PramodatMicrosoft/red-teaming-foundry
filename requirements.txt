@@ -1,0 +1,12 @@
+# Azure AI Red Team Evaluation Dependencies
+
+# Azure SDK
+azure-ai-evaluation[redteam]>=1.14.0
+azure-ai-projects>=1.0.0
+azure-identity>=1.19.0
+
+# OpenAI
+openai>=1.0.0
+
+# Utilities
+python-dotenv>=1.0.0
