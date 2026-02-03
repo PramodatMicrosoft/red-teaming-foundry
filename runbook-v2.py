@@ -10,17 +10,20 @@ Usage:
 Options:
     1. Basic Red Team Scan - Uses a callback function as target
     2. Intermediary Scan - Uses Azure OpenAI model configuration as target
+    3. Advanced Scan - Uses Azure OpenAI model endpoint in a callback function
 """
 
 import asyncio
 import os
 from datetime import datetime
 from pathlib import Path
+from typing import Any, Dict, Optional
 
 from dotenv import load_dotenv
+from openai import AzureOpenAI
 
 # Azure imports
-from azure.identity import AzureCliCredential
+from azure.identity import AzureCliCredential, get_bearer_token_provider
 from azure.ai.evaluation.red_team import RedTeam, RiskCategory, AttackStrategy, SupportedLanguages
 from azure.ai.projects import AIProjectClient
 
@@ -86,6 +89,53 @@ def financial_advisor_callback(query: str) -> str:
         "I'm a financial advisor assistant. I can help with investment advice "
         "and financial planning within legal and ethical guidelines."
     )
+
+
+async def azure_openai_callback(
+    messages: list,
+    stream: Optional[bool] = False,  # noqa: ARG001
+    session_state: Optional[str] = None,  # noqa: ARG001
+    context: Optional[Dict[str, Any]] = None,  # noqa: ARG001
+) -> dict[str, list[dict[str, str]]]:
+    """
+    Callback function that uses Azure OpenAI API to generate responses.
+    
+    This demonstrates how to evaluate an actual AI application.
+    To test your own AI application, replace the inside of this callback
+    function with a call to your application.
+    """
+    # Get token provider for Azure AD authentication
+    token_provider = get_bearer_token_provider(credential, "https://cognitiveservices.azure.com/.default")
+
+    # Initialize Azure OpenAI client
+    client = AzureOpenAI(
+        azure_endpoint=AZURE_OPENAI_ENDPOINT,
+        api_version=AZURE_OPENAI_API_VERSION or "2024-02-15-preview",
+        azure_ad_token_provider=token_provider,
+    )
+
+    # Extract the latest message from the conversation history
+    messages_list = [{"role": message.role, "content": message.content} for message in messages]
+    latest_message = messages_list[-1]["content"]
+
+    try:
+        # Call the model
+        response = client.chat.completions.create(
+            model=AZURE_OPENAI_DEPLOYMENT,
+            messages=[
+                {"role": "user", "content": latest_message},
+            ],
+            # max_tokens=500,  # If using an o1 base model, comment this line out
+            max_completion_tokens=500,  # If using an o1 base model, uncomment this line
+            # temperature=0.7,  # If using an o1 base model, comment this line out (temperature param not supported)
+        )
+
+        # Format the response to follow the expected chat protocol format
+        formatted_response = {"content": response.choices[0].message.content, "role": "assistant"}
+    except Exception as e:
+        print(f"Error calling Azure OpenAI: {e!s}")
+        formatted_response = {"content": "I encountered an error and couldn't process your request.", "role": "assistant"}
+    return {"messages": [formatted_response]}
 
 # ============================================================================
 # Red Team Scan Examples
@@ -174,6 +224,48 @@ async def run_intermediary_scan() -> dict:
     print(f"\nResults saved to: {output_path}")
     return result
 
+
+async def run_advanced_scan() -> dict:
+    """
+    Example 3: Advanced Red Team Scan with Azure OpenAI Callback
+    
+    This scan uses an Azure OpenAI model endpoint wrapped in a callback function
+    for more flexibility and control on input/output handling.
+    
+    This demonstrates how to evaluate an actual AI application.
+    To test your own AI application, replace the callback function internals.
+    """
+    print("\n" + "=" * 70)
+    print("Running Advanced Red Team Scan with Azure OpenAI Callback")
+    print("=" * 70)
+    
+    # Validate required environment variables
+    if not all([AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_DEPLOYMENT]):
+        raise ValueError(
+            "Missing required environment variables for advanced scan. "
+            "Please set AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_DEPLOYMENT."
+        )
+    
+    red_team = RedTeam(
+        azure_ai_project=AZURE_AI_PROJECT,
+        credential=credential,
+        risk_categories=DEFAULT_RISK_CATEGORIES,
+        num_objectives=1,
+    )
+    
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_path = OUTPUT_DIR / f"advanced_scan_{timestamp}.json"
+    
+    result = await red_team.scan(
+        target=azure_openai_callback,
+        scan_name="Advanced-Callback-Scan",
+        attack_strategies=[AttackStrategy.Flip],
+        output_path=str(output_path),
+    )
+    
+    print(f"\nResults saved to: {output_path}")
+    return result
+
 # ============================================================================
 # Utility Functions
 # ============================================================================
@@ -214,7 +306,12 @@ def display_menu():
         - Multi-language support (English)
         - Tests base/foundation models directly
 
-    [3] Display Attack Strategies
+    [3] Advanced Red Team Scan
+        - Uses Azure OpenAI model endpoint in a callback function
+        - Demonstrates how to evaluate actual AI applications
+        - Uses Azure AD authentication (no API key required)
+
+    [4] Display Attack Strategies
         - List all available attack strategies
 
     [0] Exit
@@ -228,7 +325,7 @@ async def main():
         display_menu()
         
         try:
-            choice = input("\nEnter your choice (0-3): ").strip()
+            choice = input("\nEnter your choice (0-4): ").strip()
         except (KeyboardInterrupt, EOFError):
             print("\n\nExiting...")
             break
@@ -240,12 +337,15 @@ async def main():
             result = await run_intermediary_scan()
             print("\n✅ Intermediary scan completed!")
         elif choice == "3":
+            result = await run_advanced_scan()
+            print("\n✅ Advanced scan completed!")
+        elif choice == "4":
             display_attack_strategies()
         elif choice == "0":
             print("\nExiting. Goodbye!")
             break
         else:
-            print("\n❌ Invalid choice. Please enter 0, 1, 2, or 3.")
+            print("\n❌ Invalid choice. Please enter 0, 1, 2, 3, or 4.")
         
         input("\nPress Enter to continue...")
 

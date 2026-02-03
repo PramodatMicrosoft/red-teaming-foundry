@@ -9,7 +9,8 @@ This project provides examples for testing AI systems against adversarial attack
 ## Features
 
 - **Basic Red Team Scan**: Quick evaluation using callback functions as targets
-- **Intermediary Red Team Scan**: Advanced evaluation using Azure OpenAI model configurations
+- **Intermediary Red Team Scan**: Evaluation using Azure OpenAI model configurations
+- **Advanced Red Team Scan**: Uses Azure OpenAI in a callback function for real AI application testing
 - **Multiple Risk Categories**: Test against violence, hate/unfairness, sexual content, self-harm, and more
 - **Attack Strategies**: Flip, Compose, and various other attack patterns
 
@@ -73,7 +74,12 @@ AZURE_OPENAI_API_VERSION=2024-02-15-preview
        - Uses Azure OpenAI model configuration as target
        - Tests base/foundation models directly
 
-   [3] Display Attack Strategies
+   [3] Advanced Red Team Scan
+       - Uses Azure OpenAI model endpoint in a callback function
+       - Demonstrates how to evaluate actual AI applications
+       - Uses Azure AD authentication (no API key required)
+
+   [4] Display Attack Strategies
        - List all available attack strategies
 
    [0] Exit
@@ -84,6 +90,7 @@ AZURE_OPENAI_API_VERSION=2024-02-15-preview
 Scan results are saved to the `outputs/` directory with timestamped filenames:
 - `outputs/basic_scan_YYYYMMDD_HHMMSS.json/`
 - `outputs/intermediary_scan_YYYYMMDD_HHMMSS.json/`
+- `outputs/advanced_scan_YYYYMMDD_HHMMSS.json/`
 
 ## Key Metrics
 
