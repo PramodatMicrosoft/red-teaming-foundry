@@ -112,14 +112,21 @@ Scan results are saved to the `outputs/` directory with timestamped filenames:
 
 ```
 red-teaming-foundry/
-├── .env                 # Environment variables (not tracked)
-├── .gitignore           # Git ignore rules
-├── .venv/               # Python virtual environment
-├── Archive/             # Previous script versions
-├── outputs/             # Scan results directory
-├── runbook-v2.py        # Main evaluation script
-├── requirements.txt     # Python dependencies
-└── README.md            # This file
+├── .env                     # Environment variables (not tracked)
+├── .gitignore               # Git ignore rules
+├── .venv/                   # Python virtual environment
+├── config.py                # Shared configuration and constants
+├── examples/                # Individual scan examples
+│   ├── __init__.py          # Package exports
+│   ├── basic_scan.py        # Example 1: Callback function target
+│   ├── intermediary_scan.py # Example 2: Model configuration target
+│   ├── advanced_scan.py     # Example 3: Azure OpenAI callback
+│   └── utils.py             # Utility functions
+├── outputs/                 # Scan results directory
+├── Archive/                 # Previous script versions
+├── runbook-v2.py            # Main entry point / menu wrapper
+├── requirements.txt         # Python dependencies
+└── README.md                # This file
 ```
 
 ## Notes
