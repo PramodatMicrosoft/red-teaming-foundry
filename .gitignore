@@ -38,6 +38,7 @@ ENV/
 
 # Outputs
 outputs/
+Archive/
 *.json
 
 # Scan results (legacy locations)
