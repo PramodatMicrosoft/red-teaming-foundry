@@ -55,8 +55,8 @@ async def run_foundry_agent_demo():
     
     responses_client = AzureOpenAIResponsesClient(
         credential=credential,
-        azure_endpoint=AZURE_OPENAI_ENDPOINT,
-        azure_deployment=AZURE_OPENAI_DEPLOYMENT,
+        endpoint=AZURE_OPENAI_ENDPOINT,
+        deployment_name=AZURE_OPENAI_DEPLOYMENT,
         api_version=AZURE_OPENAI_API_VERSION or "2024-12-01-preview",
     )
     
@@ -149,8 +149,8 @@ async def run_single_query_demo(query: str | None = None):
     
     responses_client = AzureOpenAIResponsesClient(
         credential=credential,
-        azure_endpoint=AZURE_OPENAI_ENDPOINT,
-        azure_deployment=AZURE_OPENAI_DEPLOYMENT,
+        endpoint=AZURE_OPENAI_ENDPOINT,
+        deployment_name=AZURE_OPENAI_DEPLOYMENT,
         api_version=AZURE_OPENAI_API_VERSION or "2024-12-01-preview",
     )
     
