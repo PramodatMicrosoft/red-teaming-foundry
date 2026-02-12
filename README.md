@@ -11,6 +11,7 @@ This project provides examples for testing AI systems against adversarial attack
 - **Basic Red Team Scan**: Quick evaluation using callback functions as targets
 - **Intermediary Red Team Scan**: Evaluation using Azure OpenAI model configurations
 - **Advanced Red Team Scan**: Uses Azure OpenAI in a callback function for real AI application testing
+- **Foundry Agent Demo (MCP)**: Creates an Azure AI Foundry Agent that uses Model Context Protocol (MCP) to search Microsoft documentation and answer user queries
 - **Multiple Risk Categories**: Test against violence, hate/unfairness, sexual content, self-harm, and more
 - **Attack Strategies**: Flip, Compose, and various other attack patterns
 
@@ -79,7 +80,12 @@ AZURE_OPENAI_API_VERSION=2024-02-15-preview
        - Demonstrates how to evaluate actual AI applications
        - Uses Azure AD authentication (no API key required)
 
-   [4] Display Attack Strategies
+   [4] Foundry Agent Demo (MCP)
+       - Creates Azure AI Foundry Agent with MCP tool
+       - Crawls Microsoft documentation to answer queries
+       - Interactive conversation mode
+
+   [5] Display Attack Strategies
        - List all available attack strategies
 
    [0] Exit
@@ -121,6 +127,7 @@ red-teaming-foundry/
 │   ├── basic_scan.py        # Example 1: Callback function target
 │   ├── intermediary_scan.py # Example 2: Model configuration target
 │   ├── advanced_scan.py     # Example 3: Azure OpenAI callback
+│   ├── foundry_agent_demo.py# Example 4: MCP-powered Foundry Agent
 │   └── utils.py             # Utility functions
 ├── outputs/                 # Scan results directory
 ├── Archive/                 # Previous script versions

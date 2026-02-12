@@ -5,6 +5,9 @@ azure-ai-evaluation[redteam]>=1.14.0
 azure-ai-projects>=1.0.0
 azure-identity>=1.19.0
 
+# Microsoft Agent Framework (for MCP support)
+agent-framework-core>=1.0.0b1
+
 # OpenAI
 openai>=1.0.0
 
