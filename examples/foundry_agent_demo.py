@@ -14,7 +14,6 @@ from agent_framework.azure import AzureOpenAIResponsesClient
 from config import (
     AZURE_OPENAI_ENDPOINT,
     AZURE_OPENAI_DEPLOYMENT,
-    AZURE_OPENAI_API_VERSION,
 )
 
 
@@ -24,6 +23,9 @@ from config import (
 
 # Microsoft Learn MCP endpoint for documentation access
 MICROSOFT_DOCS_MCP_URL = "https://learn.microsoft.com/api/mcp"
+
+# API version for Azure OpenAI Responses API
+RESPONSES_API_VERSION = "2025-03-01-preview"
 
 
 async def run_foundry_agent_demo():
@@ -57,7 +59,7 @@ async def run_foundry_agent_demo():
         credential=credential,
         endpoint=AZURE_OPENAI_ENDPOINT,
         deployment_name=AZURE_OPENAI_DEPLOYMENT,
-        api_version=AZURE_OPENAI_API_VERSION or "2024-12-01-preview",
+        api_version=RESPONSES_API_VERSION,
     )
     
     # Define agent instructions
@@ -151,7 +153,7 @@ async def run_single_query_demo(query: str | None = None):
         credential=credential,
         endpoint=AZURE_OPENAI_ENDPOINT,
         deployment_name=AZURE_OPENAI_DEPLOYMENT,
-        api_version=AZURE_OPENAI_API_VERSION or "2024-12-01-preview",
+        api_version=RESPONSES_API_VERSION,
     )
     
     agent_instructions = """
