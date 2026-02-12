@@ -6,6 +6,8 @@ A Python toolkit for running red team security evaluations against AI systems us
 
 This project provides examples for testing AI systems against adversarial attacks to identify potential vulnerabilities. Red teaming helps ensure your AI applications are robust against attempts to elicit harmful, biased, or inappropriate content.
 
+**Built on Microsoft's PyRIT**: The red teaming functionality leverages [PyRIT (Python Risk Identification Tool)](https://github.com/Azure/PyRIT), Microsoft's open-source framework for AI red teaming, through the Azure AI Evaluation SDK.
+
 ## Features
 
 - **Basic Red Team Scan**: Quick evaluation using callback functions as targets
@@ -161,7 +163,57 @@ red-teaming-foundry/
 - Some risk categories are only available in cloud red teaming scenarios
 - The SDK uses internal modules that may change in future versions
 
+## Underlying Technology: PyRIT
+
+This toolkit uses the **Azure AI Evaluation SDK** (`azure-ai-evaluation[redteam]`), which is built on top of Microsoft's open-source **PyRIT (Python Risk Identification Tool for generative AI)** framework.
+
+### What is PyRIT?
+
+PyRIT is Microsoft's open-source framework designed to help security professionals and machine learning engineers proactively identify risks in generative AI systems. Key features include:
+
+| Feature | Description |
+|---------|-------------|
+| **Attack Strategy Orchestration** | Automates adversarial prompt generation and attack chains |
+| **Multi-Modal Support** | Tests text, image, and multi-modal AI systems |
+| **Extensible Architecture** | Pluggable converters, scorers, and attack strategies |
+| **Risk Categories** | Built-in categories for violence, hate, sexual content, self-harm, etc. |
+| **Memory System** | Tracks conversation history and attack results |
+
+### How Azure AI Evaluation Uses PyRIT
+
+The `azure-ai-evaluation[redteam]` package wraps PyRIT with:
+- **Azure AI Project integration** - Seamless connection to Azure AI services
+- **Cloud-based red teaming** - Scales attacks using Azure infrastructure
+- **Simplified API** - High-level `RedTeam` class abstracts PyRIT complexity
+- **Built-in attack strategies** - Flip, Compose, Morse, Caesar, and more
+
+### Attack Strategies Available
+
+| Strategy | Description | Complexity |
+|----------|-------------|------------|
+| `AttackStrategy.Flip` | Character/word flipping | Easy |
+| `AttackStrategy.Morse` | Morse code encoding | Easy |
+| `AttackStrategy.Caesar` | Caesar cipher encoding | Easy |
+| `AttackStrategy.Compose` | Combines multiple strategies | Moderate |
+| `AttackStrategy.CRESCENDO` | Multi-turn escalation | Difficult |
+| `AttackStrategy.Baseline` | Direct harmful prompts | Baseline |
+
+### PyRIT vs Azure AI Evaluation
+
+| Aspect | PyRIT (Direct) | Azure AI Evaluation SDK |
+|--------|----------------|------------------------|
+| Installation | `pip install pyrit` | `pip install azure-ai-evaluation[redteam]` |
+| Setup | Manual configuration | Azure project endpoint |
+| Scalability | Local execution | Cloud-based scaling |
+| Results | Local storage | Azure Storage integration |
+| Best For | Research, custom attacks | Enterprise red teaming |
+
+This project uses the **Azure AI Evaluation SDK** approach for enterprise-grade red teaming with Azure integration.
+
 ## Resources
 
-- [Azure AI Evaluation Documentation](https://learn.microsoft.com/azure/ai-services/)
+- [PyRIT GitHub Repository](https://github.com/Azure/PyRIT)
+- [PyRIT Documentation](https://azure.github.io/PyRIT/)
+- [Azure AI Evaluation Documentation](https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk)
 - [Red Teaming Best Practices](https://learn.microsoft.com/azure/ai-services/openai/concepts/red-teaming)
+- [Responsible AI Practices](https://www.microsoft.com/en-us/ai/responsible-ai)
