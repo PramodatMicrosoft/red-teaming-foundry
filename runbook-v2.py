@@ -11,8 +11,9 @@ Options:
     1. Basic Red Team Scan - Uses a callback function as target
     2. Intermediary Scan - Uses Azure OpenAI model configuration as target
     3. Advanced Scan - Uses Azure OpenAI model endpoint in a callback function
-    4. Foundry Agent Demo - MCP-powered agent for Microsoft documentation
-    5. Display Attack Strategies - List all available strategies
+    4. Display Attack Strategies - List all available strategies
+
+For AI Agent demos, see runbook-v3.py
 """
 
 import asyncio
@@ -24,8 +25,6 @@ from examples import (
     run_advanced_scan,
     display_attack_strategies,
 )
-# Import foundry agent demo separately (uses different SDK)
-from examples.foundry_agent_demo import run_foundry_agent_demo
 
 
 # ============================================================================
@@ -55,15 +54,12 @@ def display_menu():
         - Demonstrates how to evaluate actual AI applications
         - Uses Azure AD authentication (no API key required)
 
-    [4] Foundry Agent Demo (MCP)
-        - Creates Azure AI Foundry Agent with MCP tool
-        - Crawls Microsoft documentation to answer queries
-        - Interactive conversation mode
-
-    [5] Display Attack Strategies
+    [4] Display Attack Strategies
         - List all available attack strategies
 
     [0] Exit
+
+    Note: For AI Agent demos with MCP, run: python runbook-v3.py
     """)
     print("=" * 70)
 
@@ -78,7 +74,7 @@ async def main():
         display_menu()
         
         try:
-            choice = input("\nEnter your choice (0-5): ").strip()
+            choice = input("\nEnter your choice (0-4): ").strip()
         except (KeyboardInterrupt, EOFError):
             print("\n\nExiting...")
             break
@@ -93,15 +89,12 @@ async def main():
             result = await run_advanced_scan()
             print("\n✅ Advanced scan completed!")
         elif choice == "4":
-            await run_foundry_agent_demo()
-            print("\n✅ Foundry Agent demo completed!")
-        elif choice == "5":
             display_attack_strategies()
         elif choice == "0":
             print("\nExiting. Goodbye!")
             break
         else:
-            print("\n❌ Invalid choice. Please enter 0, 1, 2, 3, 4, or 5.")
+            print("\n❌ Invalid choice. Please enter 0, 1, 2, 3, or 4.")
         
         input("\nPress Enter to continue...")
 

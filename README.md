@@ -59,7 +59,9 @@ AZURE_OPENAI_API_VERSION=2024-02-15-preview
    az login
    ```
 
-2. **Run the evaluation tool**:
+### Red Team Evaluation (runbook-v2.py)
+
+2. **Run red team evaluations**:
    ```bash
    python runbook-v2.py
    ```
@@ -80,13 +82,29 @@ AZURE_OPENAI_API_VERSION=2024-02-15-preview
        - Demonstrates how to evaluate actual AI applications
        - Uses Azure AD authentication (no API key required)
 
-   [4] Foundry Agent Demo (MCP)
-       - Creates Azure AI Foundry Agent with MCP tool
-       - Crawls Microsoft documentation to answer queries
+   [4] Display Attack Strategies
+       - List all available attack strategies
+
+   [0] Exit
+   ```
+
+### AI Foundry Agent Demo (runbook-v3.py)
+
+4. **Run AI Agent demo with MCP**:
+   ```bash
+   python runbook-v3.py
+   ```
+
+5. **Select an option from the menu**:
+   ```
+   [1] Interactive Demo
+       - Creates Azure AI Agent with MCP tool
+       - Connects to Microsoft Learn documentation
        - Interactive conversation mode
 
-   [5] Display Attack Strategies
-       - List all available attack strategies
+   [2] Single Query Demo
+       - Run a single query against Microsoft documentation
+       - Quick demonstration of MCP capabilities
 
    [0] Exit
    ```
@@ -127,11 +145,12 @@ red-teaming-foundry/
 │   ├── basic_scan.py        # Example 1: Callback function target
 │   ├── intermediary_scan.py # Example 2: Model configuration target
 │   ├── advanced_scan.py     # Example 3: Azure OpenAI callback
-│   ├── foundry_agent_demo.py# Example 4: MCP-powered Foundry Agent
+│   ├── foundry_agent_demo.py# AI Agent with MCP for Microsoft docs
 │   └── utils.py             # Utility functions
 ├── outputs/                 # Scan results directory
 ├── Archive/                 # Previous script versions
-├── runbook-v2.py            # Main entry point / menu wrapper
+├── runbook-v2.py            # Red Team evaluation menu
+├── runbook-v3.py            # AI Foundry Agent demo menu
 ├── requirements.txt         # Python dependencies
 └── README.md                # This file
 ```
