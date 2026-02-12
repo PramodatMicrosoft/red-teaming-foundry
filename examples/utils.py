@@ -58,12 +58,13 @@ def display_attack_strategies():
     print(f"{'Category':<25} | {'Description':<70}")
     print("-" * 100)
     
-    for category in dir(RiskCategory):
-        if not category.startswith("_"):
-            desc = RISK_CATEGORY_DESCRIPTIONS.get(category, "Tests for this risk type")
-            print(f"{category:<25} | {desc:<70}")
+    categories = [attr for attr in dir(RiskCategory) if not attr.startswith("_")]
+    for category in categories:
+        desc = RISK_CATEGORY_DESCRIPTIONS.get(category, "Tests for this risk type")
+        print(f"{category:<25} | {desc:<70}")
     
     print("-" * 100)
+    print(f"Total Risk Categories: {len(categories)}")
     
     # Display Attack Strategies
     print("\n⚔️  ATTACK STRATEGIES")
