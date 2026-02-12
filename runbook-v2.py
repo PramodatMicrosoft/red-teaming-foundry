@@ -54,8 +54,9 @@ def display_menu():
         - Demonstrates how to evaluate actual AI applications
         - Uses Azure AD authentication (no API key required)
 
-    [4] Display Attack Strategies
-        - List all available attack strategies
+    [4] Display Risk Categories & Attack Strategies
+        - View all risk categories with descriptions
+        - View all attack strategies with complexity levels
 
     [0] Exit
 
